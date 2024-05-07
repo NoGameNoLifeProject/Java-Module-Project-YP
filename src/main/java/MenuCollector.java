@@ -5,6 +5,12 @@ public class MenuCollector {
     private final ArrayList<Product> products = new ArrayList<>();
     private final InputProcessor inputProcessor;
 
+    private final int COMMAND_ADD_ARGUMENT_COUNT = 3;
+    private final int COMMAND_ADD_NAME_INDEX = 1;
+    private final int COMMAND_ADD_COST_INDEX = 2;
+    private final String ADD_COMMAND = "добавить";
+    private final String END_COMMAND = "завершить";
+
     MenuCollector(InputProcessor inputProcessor){
         this.inputProcessor = inputProcessor;
     }
@@ -21,10 +27,10 @@ public class MenuCollector {
             }
 
             switch (command[0].toLowerCase()){
-                case "добавить":
+                case ADD_COMMAND:
                     processAdd(command);
                     continue;
-                case "завершить":
+                case END_COMMAND:
                     listProducts();
                     break;
                 default:
@@ -38,16 +44,18 @@ public class MenuCollector {
     }
 
     private void processAdd(String[] command){
-        if (command.length < 3){
+        if (command.length < COMMAND_ADD_ARGUMENT_COUNT){
             System.out.println("Вы ввели не полную команду!");
             return;
         }
         double cost;
-        String name = command[1];
+        String name = command[COMMAND_ADD_NAME_INDEX];
         try {
-            cost = Double.parseDouble(command[2]);
-            if (cost < 0)
+            cost = Double.parseDouble(command[COMMAND_ADD_COST_INDEX]);
+            if (cost < 0) {
                 System.out.println("Цена товара не может быть отрицательной!");
+                return;
+            }
         } catch (NumberFormatException e) {
             System.out.println("Введите корректную стоимость товара!");
             return;
